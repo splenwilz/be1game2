@@ -36,3 +36,19 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+.article-box {
+  display: flex;
+
+  /* flex-wrap: wrap; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  /* border: 1px solid #ccc; */
+  width: 200px;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+}
+
