@@ -1,0 +1,70 @@
+import React, { useEffect, useState, useContext } from 'react';
+import styles from "../styles.module.css";
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+import { UserContext } from '../UserContext';
+
+function Header() {
+  const [email, setEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          'http://localhost:5000/api/user/profile',
+          {
+            withCredentials: true
+          }
+        );
+        setEmail(response.data.email);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  async function logout(event: React.MouseEvent<HTMLElement>) {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/user/logout'
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  }
+
+  return (
+    <div>
+      <ul className={styles.topnav}>
+        {email ? (
+          <>
+            <li className="">
+              <a href="/login">{email}</a>
+            </li>
+            <li className="">
+              <a href="/logout" onClick={logout}>Logout</a>
+            </li>
+          </>
+        ) : (
+          <>
+            <li className="">
+              <a href="/login">Login</a>
+            </li>
+            <li className="">
+              <a href="/register">Register</a>
+            </li>
+          </>
+        )}
+      </ul>
+    </div>
+  );
+}
+
+export default Header;
