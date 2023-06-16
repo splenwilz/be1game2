@@ -53,10 +53,5 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/react-burger-menu": "^2.8.3"
-  },
-  "browser": {
-    "fs": false,
-    "path": false,
-    "os": false
   }
 }

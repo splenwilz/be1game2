@@ -8,31 +8,31 @@ import { UserContext } from '../UserContext';
 function Header() {
   const [email, setEmail] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          'http://localhost:5000/api/user/profile',
-          {
-            withCredentials: true
-          }
-        );
-        setEmail(response.data.email);
-        console.log(response.data);
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         'https://be1web.onrender.com/api/user/profile',
+  //         {
+  //           withCredentials: true
+  //         }
+  //       );
+  //       setEmail(response.data.email);
+  //       console.log(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching profile:', error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   async function logout(event: React.MouseEvent<HTMLElement>) {
     event.preventDefault();
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/user/logout'
+        'https://be1web.onrender.com/api/user/logout'
       );
       console.log(response.data);
     } catch (error) {
@@ -42,6 +42,9 @@ function Header() {
 
   return (
     <div>
+      <a href="../">
+        <img src="../images/logo.gif" alt="" className={styles.regislogo}/>
+      </a>
       <ul className={styles.topnav}>
         {email ? (
           <>

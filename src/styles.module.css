@@ -3,6 +3,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    margin-top: 50px;
     /* gap: 1rem; */
   }
   .TopRow {
@@ -91,6 +92,11 @@
     width: 300px;
     margin-left:40px;
   }
+  .context__hierarchy__container{
+    display: flex;
+    justify-content: center;
+    /* margin-bottom: 50px; */
+  }
 
 
   .article__box__parent{
@@ -131,10 +137,15 @@
   .main__context__content{
 
     height: 300px;
-    overflow-y: scroll;
-
-    
+    overflow-y: scroll;   
   }
+
+  .search__container{
+    display: flex;
+    justify-content: center;
+  }
+
+
 
   
 
@@ -158,7 +169,7 @@
   }
 
   /* Loading */
-  /* .loadingContainer {
+  .loadingContainer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 20px;
@@ -194,7 +205,7 @@
     width: 80%;
     height: 16px;
     background-color: #eee;
-  } */
+  } 
   
 
 
@@ -413,4 +424,17 @@
   .topnav li a:hover{
     background-color: rgb(199, 198, 198);;
     color:#282626
+  }
+
+
+  .terms__content{
+      color: #626A81;
+      height: 350px;
+      overflow-y: scroll;
+      line-height: 26px;
+      margin-top: 25px;
+  }
+  .terms__content h1{
+    position: fixed;
+    margin-top:-46px;
   }

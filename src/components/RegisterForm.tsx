@@ -24,7 +24,7 @@ const RegisterForm: React.FunctionComponent<RegisterFormProps> = () => {
 
       
       try {
-        await axios.post('http://localhost:5000/api/user/register', {
+        await axios.post('https://be1web.onrender.com/api/user/register', {
           email,
           password,
         });
@@ -41,52 +41,47 @@ const RegisterForm: React.FunctionComponent<RegisterFormProps> = () => {
    
     return ( 
         <div className={styles.content__container}>
-            <ToastContainer />
-            
-            <div className={styles.content}>
-            {/* <div className={styles.text}>Sign Up</div> */}
-            <div>
-        {/* <button onClick={notify}>Notify!</button> */}
-      </div>
-            <form onSubmit={register}>
-                <div className={styles.logo__container}>
-                    <img src="../images/logo.gif" alt="" className={styles.regislogo}/>
-                </div>
-                
-                <div className={styles.field}>
-                    <span className="bx bxs-envelope" />
-                    <input 
-                        type="email" 
-                        placeholder="Email" 
-                        value={email}
-                        onChange={ev => setEmail(ev.target.value)}
-                        required 
-                    />
-                </div>
-                <div className={styles.field}>
-                    <span className="bx bxs-lock-alt" />
-                    <input 
-                        type="password" 
-                        placeholder="Password" 
-                        onChange={ev => setPassword(ev.target.value)}
-                        required 
-                    />
-                </div>
-                <button className={styles.registgration__button}>Sign Up</button>
-                {/* <h4>or Sign Up with social platforms</h4>
-                <div className={styles.social_icon}>
-                    <i className="bx bxl-facebook" />
-                    <i className="bx bxl-discord-alt" />
-                    <i className="bx bxl-twitter" />
-                    <i className="bx bxl-dribbble" />
-                </div> */}
-                <div className={styles.foot}>
-                    <a>Already have an account?</a>
-                    <a className={styles.in} href="#">Sign In</a>
-                </div>
-            </form>
-        </div>
-    </div>
+            <ToastContainer />            
+            <div className={styles.content}>                
+                <form onSubmit={register}>
+                    <div className={styles.logo__container}>
+                        <img src="../images/logo.gif" alt="" className={styles.regislogo}/>
+                    </div>
+                    
+                    <div className={styles.field}>
+                        <span className="bx bxs-envelope" />
+                        <input 
+                            type="email" 
+                            placeholder="Email" 
+                            value={email}
+                            onChange={ev => setEmail(ev.target.value)}
+                            required 
+                        />
+                    </div>
+                    <div className={styles.field}>
+                        <span className="bx bxs-lock-alt" />
+                        <input 
+                            type="password" 
+                            placeholder="Password" 
+                            onChange={ev => setPassword(ev.target.value)}
+                            required 
+                        />
+                    </div>
+                    <button className={styles.registgration__button}>Sign Up</button>
+                    {/* <h4>or Sign Up with social platforms</h4>
+                    <div className={styles.social_icon}>
+                        <i className="bx bxl-facebook" />
+                        <i className="bx bxl-discord-alt" />
+                        <i className="bx bxl-twitter" />
+                        <i className="bx bxl-dribbble" />
+                    </div> */}
+                    <div className={styles.foot}>
+                        <a>Already have an account?</a>
+                        <a className={styles.in} href="#">Sign In</a>
+                    </div>
+                </form>
+                        </div>
+                    </div>
      );
 }
  

@@ -45,7 +45,7 @@ function LeftPane() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post('http://localhost:5000/api/article/getcontext',{
+        const response = await axios.post('https://be1web.onrender.com/api/article/getcontext',{
           "parent": "Earth"
       });
         setContexts(response.data);
@@ -66,6 +66,7 @@ function LeftPane() {
         {contextParent && (
           <ContextParent 
             imageSrc={`https://be1.s3.eu-north-1.amazonaws.com/${contextParent.replace(/\s+/g, '+')}.png`}
+            articleLink={contextParent.replace(/\s+/g, '-')}
           />
         )}
       </div>
@@ -89,7 +90,7 @@ function LeftPane() {
           key={index}
           imageSrc={context.imageurl}
           // articleLink={context._id}
-          articleLink={context._id}
+          articleLink={context.name.replace(/\s+/g, '-')}
           title={context.name}
           />
         ))

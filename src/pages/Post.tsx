@@ -19,11 +19,15 @@ import ContextParent from '../components/ContextParent';
 import Loading from '../components/Loading';
 
 
+
 import axios from "axios";
 
 
 import MainContext from '../components/MainContext';
 import ContextBox from '../components/ContextBox';
+
+import { SearchBar } from "../components/SearchBar";
+import { SearchResultsList } from "../components/SearchResultList";
 
 
 const handleResizeHandleDoubleClick = (): void => {
@@ -92,26 +96,51 @@ export default function App() {
   const [showLastPanel, setShowLastPanel] = useState(true);
 
 
+
   const [contexts, setContexts] = useState<Context[]>([]); // Updated initial value to an empty array
   const [contextParent, setContextParent] = useState<string>(''); // Updated initial value to an empty string
+
+  const [grandParent, setgrandParent] = useState<string>(''); // Updated initial value to an empty string
 
   const [imageurl, setImageUrl] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [references, setReferences] = useState<string>('');
 
 
-  // ...
+  const [results, setResults] = useState<any[]>([]);
+
+  const [heirarchy, setHeirarchy] = useState<number>(0);
+  const [isBreadcrumpVisible, setIsBreadcrumpVisible] = useState(true);
+
+  // Add isLoading state
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleSearchIconClick = () => {
+    // Handle search icon click logic
+    setIsBreadcrumpVisible(!isBreadcrumpVisible);
+    // This function will be called when the search icon is clicked in the SearchBar component
+  };
 
 const { id } = useParams();
+const id2 = id?.replace(/-/g, ' ');
+console.log(id2);
 useEffect(() => {
   if (id) {
+    // setHeirarchy((heirarchy) => heirarchy + 1);
+    console.log(heirarchy);
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/article/post/${id}`);
-        setImageUrl(response.data.imageurl);
-        setContent(response.data.description);
-        setReferences(response.data.references);
-        setContextParent(response.data.name);
+        const response = await axios.get(`https://be1web.onrender.com/api/article/post/${id2}`);
+        const postData = response.data[0];
+        console.log(postData);
+        setImageUrl(postData.imageurl);
+        setContent(postData.description);
+        setHeirarchy(postData.heirarchynumber2);
+        // setContexts(postData[0]);
+        
+        setReferences(postData.references);
+        setContextParent(postData.name);
+        setgrandParent(postData.parent);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -119,25 +148,24 @@ useEffect(() => {
 
     const fetchContext = async () => {
       try {
-        const response = await axios.post('http://localhost:5000/api/article/getcontext', {
-          "parent": contextParent
+        const response = await axios.post('https://be1web.onrender.com/api/article/getcontext', {
+          parent: contextParent
         });
         setContexts(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
     const fetchContent = async () => {
       try {
-        const response = await axios.post('http://localhost:5000/api/article/getcontext', {
+        const response = await axios.post('https://be1web.onrender.com/api/article/getcontext', {
           "name": contextParent
         });
         // console.log(response.data[0]);
         setContent(response.data[0].description);
         setReferences(response.data[0].references);
-        console.log(content);
-        console.log(references);
+        // console.log(content);
+        // console.log(references);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -147,14 +175,30 @@ useEffect(() => {
     fetchData();
     fetchContext();
   }
-}, [id, contextParent]);
+}, [id, contextParent, setContent, setReferences, setContexts]);
 
-// ...
 
 
   return (
     <>
     <Header />
+    <div className={styles.search__container}>
+      {isBreadcrumpVisible && (
+          <div className={styles.context__hierarchy__container}>
+            {[...Array(heirarchy)].map((_, index) => (
+            <ContextBox
+              key={index}
+              imageSrc={`hierarchy/Be1 Tier${index + 1}.jpg`}
+            />
+          ))}
+          </div>
+      )}
+      <div className="search-bar-container">
+        <SearchBar setResults={setResults} onSearchIconClick={handleSearchIconClick}/>
+        {!isBreadcrumpVisible && results && results.length > 0 && <SearchResultsList results={results} />}
+      </div>
+    
+    </div>
       <div className={styles.Container}>
         
         
@@ -175,7 +219,8 @@ useEffect(() => {
                     <div className={styles.context__parent__container}>
                       {contextParent && (
                         <ContextParent 
-                          imageSrc={`https://be1.s3.eu-north-1.amazonaws.com/${contextParent.replace(/\s+/g, '+')}.png`}
+                          imageSrc={`https://be1.s3.eu-north-1.amazonaws.com/${grandParent.replace(/\s+/g, '+')}.png`}
+                          articleLink={grandParent.replace(/\s+/g, '-')}
                         />
                       )}
                     </div>
@@ -198,7 +243,7 @@ useEffect(() => {
                         <ArticleBox
                         key={index}
                         imageSrc={`https://be1.s3.eu-north-1.amazonaws.com/${context.imageurl.replace(/\s+/g, '+')}.png`}
-                        articleLink={context._id}
+                        articleLink={context.name.replace(/\s+/g, '-')}
                         title={context.name}
                         />
                       ))
